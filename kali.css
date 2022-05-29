@@ -1,0 +1,109 @@
+@charset="UTF-8";
+body{
+	font-family: "標楷體","JetBrains Mono", "Arial";
+	font-size= 16pt;
+	
+	padding: 0px;
+  	margin: 0;
+  	padding: 0;
+  	background-color: black;
+}
+
+}
+#main{
+	margin: 0 auto;
+	border: 0px #ffffff solid;
+	width: 1000px;
+	height :auto;}
+header{
+	margin: 10 auto;
+	padding: 4px;
+	border-bottom: 4px #330000 solid;
+	width: auto;
+	height:80px;
+	text-indent: 12em;}
+aside{
+	width:180px;
+	float: left;
+	height:auto;
+	background-color: black;
+}
+article{
+	border-right: 4px #330000 solid;
+	border-left: 4px #330000 solid;
+	color:	#ffffff;
+	margin-left: 180px;
+	height:auto;
+	display: block;
+	}
+h1{
+	color:	#ffffff;
+	text-align:	 left;	}
+p{
+	color:	#ffffff;
+	text-align:	 left;
+	text-indent: 2em;	}/*文字設計*/
+p:active{
+	color:black;
+	background-color:#ffffff;}
+
+.style_Pic{	font-size:	0.5em;
+	margin:15px;
+}/*這是給圖片對齊用*/
+ul{	
+	margin:15px;
+	list-style-image:url(Skeleton.png);
+	color:#ffffff ;
+		}
+a:link	{	color:#BD0000;font-weight:bolder;}
+a:visit	{	color:#BD0000;font-weight:bolder;	}
+a:hover	{	border: 1px solid black;}
+a:active	{	color:yellow;}
+.consection{
+	display: block;
+	border: 0px #ffffff solid;
+	left:10px;top:10px;	
+	margin:0px auto;padding:20px;
+}/*width:780px;*/
+.code{	
+	display: block;
+	width:780px;
+	color: #808080;
+	line-height: 20px;
+	margin:0px;
+	margin-left: 30px;	
+	font-weight:bolder;
+}
+/*邊框*/
+fieldset{
+	border:4px #330000 solid;
+}
+.mg{
+	margin:3px;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border:2px #330000 solid;
+	}
+table{
+	border: 2px pink solid ;
+	color:#ffffff;
+}
+th,td{
+	border:1px pink solid ;
+	padding:5px;}
+footer{	
+	margin: 10 auto;
+	border: 4px #330000 solid;
+	background-color: black;
+	color: #ffffff;
+	width: auto;
+	height:50px;
+	text-align: center;
+	line-height: 50px;
+	padding: 0px;}
+#cw {
+  position: fixed;
+  z-index: -1;
+}
+

